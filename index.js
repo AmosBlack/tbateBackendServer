@@ -63,7 +63,7 @@ function getChapterData() {
                 }
             })
             .catch((error) => {
-                return 'failure';
+                return console.log(error);
             });
     });
 }
