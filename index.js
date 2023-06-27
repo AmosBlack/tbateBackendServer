@@ -1,10 +1,11 @@
 const express = require('express');
-const app = express();
 const axios = require('axios');
 const cheerio = require('cheerio');
 const firebase = require('firebase');
 const cron = require('node-cron');
 const moment = require('moment-timezone');
+
+const app = express();
 
 // Firebase initialization
 const firebaseConfig = {
