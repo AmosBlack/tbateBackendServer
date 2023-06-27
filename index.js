@@ -76,8 +76,8 @@ const startServer = () => {
 
 
 app.get('/update-chapters', (req, res) => {
-    getChapterData();
-    res.send('Cron job executed successfully.');
+    getChapterData(res.send('Cron job executed successfully.');
+    
   });   
 
 // Start the server and schedule the cron job
