@@ -20,6 +20,24 @@ const firebaseConfig = {
 const firebaseApp = firebase.initializeApp(firebaseConfig);
 const DB = firebaseApp.database();
 
+
+function scrapeChap(link) {
+    console.log(link)
+    axios
+        .get(link)
+        .then((res) => {
+            const x = cheerio.load(res.data);
+            var chapterText = x.html('#chapterText');
+            chapterText = chapterText.replaceAll('Sponsored Content', '');
+            console.log(optionCount)
+            DB.ref(`chapters/${optionCount}`).set(chapterText);
+        })
+        .catch((error) => {
+            return 'failure';
+        });
+}
+
+
 function getChapterData() {
     DB.ref('chapters-count').once('value').then((snapshot) => {
         axios
@@ -29,21 +47,9 @@ function getChapterData() {
                 var optionCount = $("select[onchange='location = this.options[this.selectedIndex].value;']").find('option').length - 40;
                 if (optionCount > snapshot.val()) {
                     DB.ref('chapters-count').set(optionCount);
-                    const link = $("select[onchange='location = this.options[this.selectedIndex].value;']")
-                        .find('option')
-                        .last()
-                        .attr('val');
-                    axios
-                        .get(link)
-                        .then((res) => {
-                            const x = cheerio.load(res.data);
-                            var chapterText = x.html('#chapterText');
-                            chapterText = chapterText.replaceAll('Sponsored Content', '');
-                            DB.ref(`chapters/${optionCount}`).set(chapterText);
-                        })
-                        .catch((error) => {
-                            return 'failure';
-                        });
+                    const link = $("select[onchange='location = this.options[this.selectedIndex].value;']").find('option').last().attr('value');
+                    console.log(link)
+                    scrapeChap(link,console.log("scraping"))
                 }
             })
             .catch((error) => {
