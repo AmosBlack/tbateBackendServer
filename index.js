@@ -53,7 +53,6 @@ function getChapterData() {
 }
 
 getChapterData()
-console.log("On Air")
 
 //cron job
 const timezone = 'America/New_York'; // Set the New York timezone
