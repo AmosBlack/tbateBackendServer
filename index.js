@@ -22,13 +22,17 @@ const DB = firebaseApp.database();
 
 
 function scrapeChap(link,count) {
+    //scrape the link
     axios
         .get(link)
         .then((res) => {
+            //parse html
             const x = cheerio.load(res.data);
-            console.log(chapterText)
+            //store the html inside chapterText
             var chapterText = x.html('#chapterText');
+            //filter out sponsored content
             chapterText = chapterText.replaceAll('Sponsored Content', '');
+            //on location given as count, push the chapter html in db
             DB.ref(`chapters/${count}`).set(chapterText);
         })
         .catch((error) => {
@@ -38,16 +42,23 @@ function scrapeChap(link,count) {
 
 
 function getChapterData() {
+    //pull the number of chapters from db asynchronously
     DB.ref('chapters-count').once('value').then((snapshot) => {
+        //scrape a chapter 
         axios
             .get('https://lnreader.org/the-beginning-after-the-end-535558/chapter-prologue')
             .then((result) => {
-                const $ = cheerio.load(result.data);
-                var optionCount = $("select[onchange='location = this.options[this.selectedIndex].value;']").find('option').length - 40;
+                //load html
+                const $ = cheerio.load(result.data); //parsed html
+                // from it scrape the number of chapters
+                var optionCount = $("select[onchange='location = this.options[this.selectedIndex].value;']").find('option').length - 40; //no of chapters on lnreader
+                //if db chapters less than on lnreader
                 if (optionCount > snapshot.val()) {
+                    //update chapter count
                     DB.ref('chapters-count').set(optionCount);
+                    //link for the latest chapter scraped from lnreader
                     const link = $("select[onchange='location = this.options[this.selectedIndex].value;']").find('option').last().attr('value');
-                    console.log(link)
+                    //scrape from this link, along with no of chapters for location in db
                     scrapeChap(link,optionCount)
                 }
             })
@@ -74,7 +85,7 @@ app.listen(3000, () => {
     //   moment.tz(timezone).then(() => {
     //     getChapterData();
     //   });
-    // }, {
+    // }, { 
     //   timezone,
     // });
 });
