@@ -22,18 +22,17 @@ const DB = firebaseApp.database();
 
 
 function scrapeChap(link) {
-    console.log(link)
     axios
         .get(link)
         .then((res) => {
             const x = cheerio.load(res.data);
+            console.log(chapterText)
             var chapterText = x.html('#chapterText');
             chapterText = chapterText.replaceAll('Sponsored Content', '');
-            console.log(optionCount)
             DB.ref(`chapters/${optionCount}`).set(chapterText);
         })
         .catch((error) => {
-            return 'failure';
+            console.log(error)
         });
 }
 
@@ -58,29 +57,26 @@ function getChapterData() {
     });
 }
 
-// Start the server and schedule the cron job
-const startServer = () => {
-    app.listen(3000, () => {
-        console.log('Server started on port 3000');
-
-        // // Cron job
-        // const timezone = 'America/New_York'; // Set the New York timezone
-        // const cronExpression = '*/15 * * * 5'; // Run every 15 minutes on Fridays
-
-        // cron.schedule(cronExpression, () => {
-        //   moment.tz(timezone).then(() => {
-        //     getChapterData();
-        //   });
-        // }, {
-        //   timezone,
-        // });
-    });
-};
-
 
 app.get('/update-chapters', (req, res) => {
     getChapterData(res.send("Cron is executed"))
 });
 
-// Start the server and schedule the cron job
-startServer();
+
+app.listen(3000, () => {
+    console.log('Server started on port 3000');
+
+    // // Cron job
+    // const timezone = 'America/New_York'; // Set the New York timezone
+    // const cronExpression = '*/15 * * * 5'; // Run every 15 minutes on Fridays
+
+    // cron.schedule(cronExpression, () => {
+    //   moment.tz(timezone).then(() => {
+    //     getChapterData();
+    //   });
+    // }, {
+    //   timezone,
+    // });
+});
+
+
