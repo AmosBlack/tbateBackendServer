@@ -45,6 +45,7 @@ function scrapeChap(link,count) {
 function getChapterData() {
     //pull the number of chapters from db asynchronously
     DB.ref('chapters-count').once('value').then((snapshot) => {
+        console.log("thebug entered")
         //scrape a chapter 
         axios
             .get('https://lnreader.org/the-beginning-after-the-end-535558/chapter-prologue')
@@ -75,8 +76,8 @@ app.get('/update-chapters', (req, res) => {
 });
 
 
-app.listen(3000, () => {
-    console.log('Server started on port 3000');
+app.listen( () => {
+    console.log('Server started');
 
     // // Cron job
     // const timezone = 'America/New_York'; // Set the New York timezone
