@@ -42,7 +42,7 @@ function getChapterData() {
                             var chapterText = x.html('#chapterText');
                             chapterText = chapterText.replaceAll('Sponsored Content', '');
                             DB.ref(`chapters/${optionCount}`).set(chapterText);
-                            return true;
+                            return optionCount;
                         })
                         .catch((error) => {
                             return false;
@@ -74,5 +74,5 @@ app.listen(3000, () => {
 });
 
 app.get('/', (req, res) => {
-    res.json(getChapterData())
+    res.json({chapter:getChapterData()})
 })
