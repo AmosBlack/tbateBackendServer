@@ -77,6 +77,7 @@ const startServer = () => {
 
 app.get('/update-chapters', (req, res) => {
     getChapterData(res.send('Cron job executed'));
+    res.send("WOOW")
     
 });   
 
