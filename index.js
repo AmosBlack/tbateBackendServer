@@ -21,7 +21,7 @@ const firebaseApp = firebase.initializeApp(firebaseConfig);
 const DB = firebaseApp.database();
 
 
-function scrapeChap(link) {
+function scrapeChap(link,count) {
     axios
         .get(link)
         .then((res) => {
@@ -29,7 +29,7 @@ function scrapeChap(link) {
             console.log(chapterText)
             var chapterText = x.html('#chapterText');
             chapterText = chapterText.replaceAll('Sponsored Content', '');
-            DB.ref(`chapters/${optionCount}`).set(chapterText);
+            DB.ref(`chapters/${count}`).set(chapterText);
         })
         .catch((error) => {
             console.log(error)
@@ -48,7 +48,7 @@ function getChapterData() {
                     DB.ref('chapters-count').set(optionCount);
                     const link = $("select[onchange='location = this.options[this.selectedIndex].value;']").find('option').last().attr('value');
                     console.log(link)
-                    scrapeChap(link,console.log("scraping"))
+                    scrapeChap(link,optionCount)
                 }
             })
             .catch((error) => {
