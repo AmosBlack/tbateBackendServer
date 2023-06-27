@@ -73,3 +73,7 @@ app.listen(3000, () => {
         timezone,
     });
 });
+
+app.get('/',(req,res)=>{
+    res.json({message:"This is your backend"})
+})
