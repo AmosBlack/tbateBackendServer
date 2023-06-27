@@ -27,7 +27,6 @@ function getChapterData() {
             .then((result) => {
                 const $ = cheerio.load(result.data);
                 var optionCount = $("select[onchange='location = this.options[this.selectedIndex].value;']").find('option').length - 40;
-                console.log(optionCount);
                 if (optionCount > snapshot.val()) {
                     DB.ref('chapters-count').set(optionCount);
                     const link = $("select[onchange='location = this.options[this.selectedIndex].value;']")
@@ -41,15 +40,15 @@ function getChapterData() {
                             var chapterText = x.html('#chapterText');
                             chapterText = chapterText.replaceAll('Sponsored Content', '');
                             DB.ref(`chapters/${optionCount}`).set(chapterText);
-                            return true;
+                            return optionCount;
                         })
                         .catch((error) => {
-                            return false;
+                            return 'failure';
                         });
                 }
             })
             .catch((error) => {
-                return false;
+                return 'failure';
             });
     });
 }
