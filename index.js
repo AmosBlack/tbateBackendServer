@@ -63,7 +63,6 @@ const cronExpression = '*/15 * * * 5'; // Run every 15 minutes on Fridays
 
 // Start the server
 app.listen(3000, () => {
-    getChapterData();
 
     cron.schedule(cronExpression, () => {
         moment.tz(timezone).then(() => {
@@ -74,6 +73,6 @@ app.listen(3000, () => {
     });
 });
 
-app.get('/',(req,res)=>{
-    res.json({message:"This is your backend"})
+app.get('/', (req, res) => {
+    res.json(getChapterData())
 })
