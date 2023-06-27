@@ -76,7 +76,7 @@ app.get('/update-chapters', (req, res) => {
 });
 
 
-app.listen( () => {
+app.listen(3000,() => {
     console.log('Server started');
 
     // // Cron job
