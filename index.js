@@ -40,7 +40,6 @@ function getChapterData() {
                             var chapterText = x.html('#chapterText');
                             chapterText = chapterText.replaceAll('Sponsored Content', '');
                             DB.ref(`chapters/${optionCount}`).set(chapterText);
-                            return '1234';
                         })
                         .catch((error) => {
                             return 'failure';
@@ -74,7 +73,7 @@ const startServer = () => {
 
 
 app.get('/update-chapters', (req, res) => {
-    res.send(getChapterData())
+    getChapterData(res.send("Cron is executed"))
 });
 
 // Start the server and schedule the cron job
