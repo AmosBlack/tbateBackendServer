@@ -71,7 +71,7 @@ function getChapterData() {
 
 
 app.get('/update-chapters', (req, res) => {
-    getChapterData(res.send("Cron is executed"))
+    getChapterData(res.send("Cron has been executed"))
 });
 
 
